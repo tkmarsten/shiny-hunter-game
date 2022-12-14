@@ -18,7 +18,7 @@ class Sprite {
       walkup: [[0, 3], [1, 3], [2, 3], [3, 3]],
     }
 
-    this.currentAnimation = "walkDown" //config.currentAnimation || "idleDown"
+    this.currentAnimation = "idleDown" //config.currentAnimation || "idleDown"
     this.currentAnimationFrame = 0
 
     this.animationFrameLimit = config.animationFrameLimit || 10

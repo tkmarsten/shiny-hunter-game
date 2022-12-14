@@ -1,5 +1,6 @@
 class OverworldMap {
   constructor(config) {
+    this.overworld = null
     this.gameObjects = config.gameObjects
     this.cutsceneSpaces = config.cutsceneSpaces || {}
     this.walls = config.walls || {}
@@ -48,7 +49,7 @@ class OverworldMap {
     const player = this.gameObjects['player']
     const nextCoords = util.nextPosition(player.x, player.y, player.direction)
     const match = Object.values(this.gameObjects).find(object => {
-      return `${object.x}, ${object.y}` === `${nextCoords.x}, ${nextCoords.y}`
+      return `${object.x},${object.y}` === `${nextCoords.x},${nextCoords.y}`
     })
     if (!this.isCutscenePlaying && match && match.talking.length) {
       this.startCutscene(match.talking[0].events)
@@ -57,8 +58,8 @@ class OverworldMap {
 
   checkForFootstepCutscene() {
     const player = this.gameObjects['player']
-    const match = this.cutsceneSpaces[`${player.x}, ${player.y}`]
-    console.log(match)
+    const match = this.cutsceneSpaces[`${player.x},${player.y}`]
+    console.log({ match })
     if (!this.isCutscenePlaying && match) {
       this.startCutscene(match[0].events)
     }
@@ -86,7 +87,7 @@ window.OverworldMaps = {
       player: new Person({
         isPlayerControlled: true,
         x: util.withGrid(7),
-        y: util.withGrid(13),
+        y: util.withGrid(9),
       }),
       professor: new Person({
         src: '/images/professor.png',
@@ -112,13 +113,30 @@ window.OverworldMaps = {
       [util.asGridCoord(9, 3)]: true
     },
     cutsceneSpaces: {
-      [util.asGridCoord(7, 8)]: [
+      [util.asGridCoord(7, 6)]: [
         {
           events: [
             { type: 'textMessage', text: 'What are you doing back there?' }
           ]
         }
+      ],
+      [util.asGridCoord(7, 13)]: [
+        {
+          events: [
+            { type: 'changeMap', map: 'Outside' }
+          ]
+        }
       ]
+    }
+  },
+  Outside: {
+    src: '/images/map.png',
+    gameObjects: {
+      player: new Person({
+        isPlayerControlled: true,
+        x: util.withGrid(7),
+        y: util.withGrid(12),
+      })
     }
   }
 }
