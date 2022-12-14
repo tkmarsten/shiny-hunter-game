@@ -1,10 +1,13 @@
 class OverworldMap {
   constructor(config) {
     this.gameObjects = config.gameObjects
+    this.cutsceneSpaces = config.cutsceneSpaces || {}
     this.walls = config.walls || {}
 
     this.image = new Image()
     this.image.src = config.src
+
+    this.isCutscenePlaying = false
   }
 
   drawImage(ctx, cameraPerson) {
@@ -12,8 +15,8 @@ class OverworldMap {
   }
 
   isSpaceTaken(currentX, currentY, direction) {
-    const { x, y } = util.nextPosition(currentX, currentY, direction)
-    return this.walls[`${x},${y}`] || false
+    const { x, y } = util.nextPosition(currentX, currentY, direction);
+    return this.walls[`${x},${y}`] || false;
   }
 
   mountObjects() {
@@ -22,6 +25,42 @@ class OverworldMap {
       object.id = key
       object.mount(this)
     })
+  }
+
+  async startCutscene(events) {
+    this.isCutscenePlaying = true
+
+    for (let i = 0; i < events.length; i++) {
+      const eventHandler = new OverworldEvent({
+        event: events[i],
+        map: this
+      })
+
+      await eventHandler.init()
+    }
+
+    this.isCutscenePlaying = false
+
+    Object.values(this.gameObjects).forEach(object => object.doBehaviorEvent(this))
+  }
+
+  checkForActionCutscene() {
+    const player = this.gameObjects['player']
+    const nextCoords = util.nextPosition(player.x, player.y, player.direction)
+    const match = Object.values(this.gameObjects).find(object => {
+      return `${object.x}, ${object.y}` === `${nextCoords.x}, ${nextCoords.y}`
+    })
+    if (!this.isCutscenePlaying && match && match.talking.length) {
+      this.startCutscene(match.talking[0].events)
+    }
+  }
+
+  checkForFootstepCutscene() {
+    const player = this.gameObjects['player']
+    const match = this.cutsceneSpaces[`${player.x}, ${player.y}`]
+    if (!this.isCutscenePlaying && match) {
+      this.startCutscene(match[0].events)
+    }
   }
 
   addWall(x, y) {
@@ -48,9 +87,18 @@ window.OverworldMaps = {
         x: util.withGrid(7),
         y: util.withGrid(13),
       }),
-      npc1: new Person({
-        x: util.withGrid(5),
-        y: util.withGrid(5)
+      professor: new Person({
+        src: '/images/professor.png',
+        x: util.withGrid(7),
+        y: util.withGrid(7),
+        talking: [
+          {
+            events: [
+              { type: 'textMessage', text: 'Welcome trainer.', facePlayer: 'professor' },
+              { type: 'textMessage', text: 'Who are you again?' }
+            ]
+          }
+        ]
       })
     },
     walls: {
@@ -61,6 +109,16 @@ window.OverworldMaps = {
       [util.asGridCoord(9, 4)]: true,
       [util.asGridCoord(5, 3)]: true,
       [util.asGridCoord(9, 3)]: true
+    },
+    cutsceneSpaces: {
+      [util.asGridCoord(7, 6)]: [
+        {
+          events: [
+            { type: 'textMessage', text: 'What are you doing back there?' },
+            { who: 'player', type: 'walk', direction: 'left' },
+          ]
+        }
+      ]
     }
   }
 }

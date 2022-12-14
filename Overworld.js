@@ -20,7 +20,9 @@ class Overworld {
 
       this.map.drawImage(this.ctx, cameraPerson)
 
-      Object.values(this.map.gameObjects).forEach(object => {
+      Object.values(this.map.gameObjects).sort((a, b) => {
+        return a.y - b.y
+      }).forEach(object => {
         object.sprite.draw(this.ctx, cameraPerson)
       })
 
@@ -32,13 +34,39 @@ class Overworld {
     tick()
   }
 
+  bindActionInput() {
+    new KeyPressListener('Enter', () => {
+      this.map.checkForActionCutscene()
+    })
+  }
+
+  bindHeroPositionCheck() {
+    document.addEventListener('PersonWalkingComplete', e => {
+      if (e.detail.whoId === 'player') {
+        this.map.checkForFootstepCutscene()
+      }
+    })
+  }
+
   init() {
     this.map = new OverworldMap(window.OverworldMaps.Center)
     this.map.mountObjects()
+
+    this.bindActionInput()
+    this.bindHeroPositionCheck()
 
     this.directionInput = new DirectionInput()
     this.directionInput.init()
 
     this.startGameLoop()
+
+    // this.map.startCutscene([
+    //   { who: 'player', type: 'walk', direction: 'up' },
+    //   { who: 'player', type: 'walk', direction: 'up' },
+    //   { who: 'player', type: 'walk', direction: 'up' },
+    //   { who: 'player', type: 'walk', direction: 'up' },
+    //   { who: 'player', type: 'walk', direction: 'up' },
+    //   { type: 'textMessage', text: 'Welcome trainer' }
+    // ])
   }
 }
