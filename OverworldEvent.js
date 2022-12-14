@@ -14,7 +14,7 @@ class OverworldEvent {
       time: this.event.time
     })
 
-    const completeHandler = (e) => {
+    const completeHandler = e => {
       if (e.detail.whoId === this.event.who) {
         document.removeEventListener('PersonStandComplete', completeHandler)
         resolve()
@@ -30,7 +30,8 @@ class OverworldEvent {
       map: this.map
     }, {
       type: 'walk',
-      direction: this.event.direction
+      direction: this.event.direction,
+      retry: true
     })
 
     const completeHandler = (e) => {

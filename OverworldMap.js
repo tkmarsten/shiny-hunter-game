@@ -58,6 +58,7 @@ class OverworldMap {
   checkForFootstepCutscene() {
     const player = this.gameObjects['player']
     const match = this.cutsceneSpaces[`${player.x}, ${player.y}`]
+    console.log(match)
     if (!this.isCutscenePlaying && match) {
       this.startCutscene(match[0].events)
     }
@@ -111,11 +112,10 @@ window.OverworldMaps = {
       [util.asGridCoord(9, 3)]: true
     },
     cutsceneSpaces: {
-      [util.asGridCoord(7, 6)]: [
+      [util.asGridCoord(7, 8)]: [
         {
           events: [
-            { type: 'textMessage', text: 'What are you doing back there?' },
-            { who: 'player', type: 'walk', direction: 'left' },
+            { type: 'textMessage', text: 'What are you doing back there?' }
           ]
         }
       ]

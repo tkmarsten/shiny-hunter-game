@@ -40,7 +40,7 @@ class Overworld {
     })
   }
 
-  bindHeroPositionCheck() {
+  bindPlayerPositionCheck() {
     document.addEventListener('PersonWalkingComplete', e => {
       if (e.detail.whoId === 'player') {
         this.map.checkForFootstepCutscene()
@@ -53,7 +53,7 @@ class Overworld {
     this.map.mountObjects()
 
     this.bindActionInput()
-    this.bindHeroPositionCheck()
+    this.bindPlayerPositionCheck()
 
     this.directionInput = new DirectionInput()
     this.directionInput.init()
