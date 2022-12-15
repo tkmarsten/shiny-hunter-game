@@ -1,9 +1,9 @@
 :root {
   --border-color: #291d4d;
-  --dialog-background: #fff3b4;
-  --menu-background: #ffe8d2;
-  --menu-border-color: #a48465;
-  --menu-font-color: #3a160d;
+  --dialog-background: #e6e6e6;
+  --menu-background: #e6e6e6;
+  --menu-border-color: #e6e6e6;
+  --menu-font-color: #252525;
   --menu-selected-background: #7fc2ff;
 }
 

@@ -65,13 +65,13 @@ class Overworld {
 
     this.startGameLoop()
 
-    // this.map.startCutscene([
-    //   { who: 'player', type: 'walk', direction: 'up' },
-    //   { who: 'player', type: 'walk', direction: 'up' },
-    //   { who: 'player', type: 'walk', direction: 'up' },
-    //   { who: 'player', type: 'walk', direction: 'up' },
-    //   { who: 'player', type: 'walk', direction: 'up' },
-    //   { type: 'textMessage', text: 'Welcome trainer' }
-    // ])
+    this.map.startCutscene([
+      { who: 'player', type: 'walk', direction: 'up' },
+      { who: 'player', type: 'walk', direction: 'up' },
+      { who: 'player', type: 'walk', direction: 'up' },
+      { type: 'textMessage', text: 'Welcome trainer. Uhm... who are you again?' },
+      { type: 'textMessage', text: 'Oh! That\'s right, you\'re filling out my shiny dex.' },
+      { type: 'textMessage', text: 'Please log in to the system so we can check your progress.' },
+    ])
   }
 }

@@ -9,6 +9,7 @@ class OverworldMap {
     this.image.src = config.src
 
     this.isCutscenePlaying = false
+    this.assetManager = ASSET_MANAGER
   }
 
   drawImage(ctx, cameraPerson) {
@@ -82,22 +83,21 @@ class OverworldMap {
 
 window.OverworldMaps = {
   Center: {
-    src: '/images/map.png',
+    src: './images/map.png',
     gameObjects: {
       player: new Person({
         isPlayerControlled: true,
         x: util.withGrid(7),
-        y: util.withGrid(9),
+        y: util.withGrid(11),
       }),
       professor: new Person({
-        src: '/images/professor.png',
+        src: './images/professor.png',
         x: util.withGrid(7),
         y: util.withGrid(7),
         talking: [
           {
             events: [
-              { type: 'textMessage', text: 'Welcome trainer.', facePlayer: 'professor' },
-              { type: 'textMessage', text: 'Who are you again?' }
+              { type: 'textMessage', text: 'How is your progress coming along?', facePlayer: 'professor' }
             ]
           }
         ]
@@ -116,7 +116,7 @@ window.OverworldMaps = {
       [util.asGridCoord(7, 6)]: [
         {
           events: [
-            { type: 'textMessage', text: 'What are you doing back there?' }
+            { type: 'textMessage', text: 'What are you doing back there?', facePlayer: 'professor' }
           ]
         }
       ],

@@ -18,7 +18,8 @@ loadSprites()
 
 ASSET_MANAGER.downloadAll(function () {
 	const overworld = new Overworld({
-		element: document.querySelector('.game-container')
+		element: document.querySelector('.game-container'),
+		assetManager: ASSET_MANAGER
 	})
 
 	overworld.init()
